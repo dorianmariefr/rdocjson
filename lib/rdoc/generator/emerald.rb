@@ -100,7 +100,6 @@ class RDoc::Generator::Emerald
     # Create the output directory
     mkdir @op_dir unless @op_dir.exist?
 
-    copy_base_files
     evaluate_toplevels
     evaluate_classes_and_modules
   end
@@ -169,15 +168,6 @@ class RDoc::Generator::Emerald
   end
 
   private
-
-  def copy_base_files
-    debug "Copying base base files..."
-    mkdir @op_dir + "stylesheets" unless File.directory?(@op_dir + "stylesheets")
-
-    cp   Dir[DATA_DIR + "stylesheets" + "*.css"], @op_dir + "stylesheets"
-    cp_r DATA_DIR + "javascripts", @op_dir
-    cp_r DATA_DIR + "images",      @op_dir
-  end
 
   def evaluate_toplevels
     @toplevels.each do |toplevel|

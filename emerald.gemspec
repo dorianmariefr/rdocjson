@@ -25,9 +25,6 @@ by Hanna, but does not share any code with it (and does not use frames!).
   # Gem contents
   spec.files = Dir["**/*.rb"] +
     Dir["**/*.rdoc"] +
-    Dir["data/stylesheets/*.css"] +
-    Dir["data/javascripts/*.js"] +
-    Dir["data/images/*.png"] +
     Dir["data/templates/*.html.erb"] +
     ["VERSION"]
 
