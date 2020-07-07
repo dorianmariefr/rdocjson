@@ -49,48 +49,6 @@ class RDoc::Generator::Emerald
   class EmeraldError < StandardError
   end
 
-  # Minimal RDoc::Toplevel-alike object (i.e. it responds to the
-  # two methods required for rendering it, +full_name+ and
-  # +description+) that is used to create the index page if
-  # none was set. I really recommend to manually set a
-  # useful index page!
-  DummyStartPage = Struct.new(:full_name, :description) do
-    def initialize
-      super()
-      self.full_name = "Start page"
-      self.description =<<-DESC
-<h1>RDoc documentation</h1>
-<p>This is a dummy start page for the RDoc documentation of this project.</p>
-<p>You’re seeing it, because the original author didn’t specify a real start
-   page for this project’s documentation, so you may want to contact him and
-   make him aware of this.</p>
-<p>If you <em>are</em> the original author, try one or both of the following
-   code snippets to make your <strong>README.rdoc</strong> file the start
-   page of your documentation:</p>
-<pre>
-# In your gemspec:
-Gem::Specification.new do |spec|
-  # ...
-  # "-m" sets the start ("main") page. "-t" specifies
-  # the title to display in the window title bar.
-  spec.rdoc_options << "-m" << "README.rdoc" << "-t" "Docs for YourProject"
-end
-
-# In your Rakefile:
-RDoc::Task.new do |rt|
-  # ...
-  # Sets the start ("main") page and specifies the
-  # title to display in the window title bar:
-  rt.main = "README.rdoc"
-  rt.title = "Docs for YourProject"
-end
-</pre>
-<p>For the time being, use the navigation sidebar to the left
-   in order to read this documentation.</p>
-      DESC
-    end
-  end
-
   # Tell RDoc about the new generator
   RDoc::RDoc.add_generator(self)
 
@@ -114,12 +72,6 @@ end
 
   # The version number.
   VERSION = File.read(ROOT_DIR + "VERSION").chomp.freeze
-
-  # Add additional options to RDoc (see the
-  # RDoc::Generator::Emerald::Options module).
-  def self.setup_options(options)
-    options.extend(RDoc::Generator::Emerald::Options)
-  end
 
   # Instanciates this generator. Automatically called
   # by RDoc.
@@ -151,14 +103,6 @@ end
     copy_base_files
     evaluate_toplevels
     evaluate_classes_and_modules
-
-    unless @options.main_page # If set, #evaluate_toplevels creates the index.html for us
-      toplevel = DummyStartPage.new
-      root_path "./" # This *is* in the toplevel
-      File.open(@op_dir + "index.html", "w") do |file|
-        file.write(render(:toplevel, binding))
-      end
-    end
   end
 
   # Darkfish returns +nil+, hence we do this as well.
@@ -251,18 +195,6 @@ end
         debug  "  => #{path}"
         file.write(render(:toplevel, binding))
       end
-
-      # If this toplevel is supposed to be the main file,
-      # copy it’s content to the index.html file.
-      if toplevel.relative_name == @options.main_page
-        debug "  => This is the main page. Writing index.html."
-
-        root_path "./" # We *are* at the top here
-
-        File.open(@op_dir + "index.html", "w") do |file|
-          file.write(render(:toplevel, binding))
-        end
-      end
     end
   end
 
@@ -301,5 +233,3 @@ end
   end
 
 end
-
-require_relative "emerald/options"
