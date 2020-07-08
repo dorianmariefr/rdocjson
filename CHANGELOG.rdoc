@@ -1,7 +1,0 @@
-= Changelog
-
-Who changed what when?
-
-== 0.0.1
-
-* Birthday!
