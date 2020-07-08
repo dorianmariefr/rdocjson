@@ -69,13 +69,38 @@ class RDoc::Generator::RDocJSON
 
     json["classes_and_modules"] = @classes_and_modules.map do |classmod|
       {
-        name: classmod.full_name
+        name: classmod.full_name,
+        superclass: classmod.module? ? "" : classmod.superclass,
+        method_list: classmod.each_method.to_a.map do |method|
+          { name: method.pretty_name }
+        end,
+        description: classmod.description,
+        includes: classmod.includes.map do |included|
+          { name: included.full_name }
+        end,
+        constants: classmod.constants.map do |const|
+          {
+            name: const.name,
+            value: const.value,
+            description: const.description
+          }
+        end,
+        attributes: classmod.attributes.map do |attribute|
+          {
+            name: attribute.name,
+            description: attribute.description
+          }
+        end
       }
     end
 
     json["methods"] = @methods.map do |method|
       {
-        name: "#{method.pretty_name} (#{method.parent.full_name})"
+        type: method.type,
+        visibility: method.visibility,
+        arglists: method.arglists,
+        description: method.description,
+        source: method.methods.map(&:to_s) - Object.methods.map(&:to_s)
       }
     end
 
