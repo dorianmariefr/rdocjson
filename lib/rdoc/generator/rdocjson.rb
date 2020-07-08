@@ -63,7 +63,8 @@ class RDoc::Generator::RDocJSON
 
     json["toplevels"] = @toplevels.map do |toplevel|
       {
-        name: toplevel.name
+        name: toplevel.name,
+        description: toplevel.description
       }
     end
 
@@ -100,7 +101,7 @@ class RDoc::Generator::RDocJSON
         visibility: method.visibility,
         arglists: method.arglists,
         description: method.description,
-        source: method.methods.map(&:to_s) - Object.methods.map(&:to_s)
+        markup_code: method.markup_code,
       }
     end
 
