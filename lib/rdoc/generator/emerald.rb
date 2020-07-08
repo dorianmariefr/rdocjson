@@ -6,6 +6,7 @@ require "fileutils"
 require "erb"
 require "rdoc/rdoc"
 require "rdoc/generator"
+require "json"
 
 # This is the main generator class that is instanciated by RDoc when
 # you order it to use the _emerald_ generator. It mainly works on

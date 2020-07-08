@@ -20,6 +20,7 @@ by Hanna, but does not share any code with it (and does not use frames!).
 
   # Dependencies
   spec.add_dependency("rdoc", "~> 4.0")
+  spec.add_dependency("json", "~> 2.3")
   spec.add_development_dependency("sass", "~> 3.0")
 
   # Gem contents
